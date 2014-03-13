@@ -25,6 +25,7 @@ class MetadataExtender(object):
         self.context = context
 
     def fiddle(self, schema):
+    
         for field in schema.fields():
             old = field.widget
 

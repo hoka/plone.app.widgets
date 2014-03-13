@@ -1,6 +1,6 @@
 from zope.interface import Interface
 from Products.CMFCore.utils import getToolByName
-
+from zope.component.hooks import getSite
 
 class IRichTextEditor(Interface):
 
@@ -18,12 +18,13 @@ class Adapter:
 
     def is_selected(self, editor):
         context = self.context
-        pm = getToolByName(context, 'portal_membership')
+        portal=getSite()
+        pm = getToolByName(portal, 'portal_membership')
         auth = pm.getAuthenticatedMember()
 
         selected_editor = auth.getProperty('wysiwyg_editor')
         if not selected_editor:
-            sp = getToolByName(context, 'portal_properties').site_properties
+            sp = getToolByName(portal, 'portal_properties').site_properties
             selected_editor = sp.getProperty('default_editor')
 
         if selected_editor == editor:
